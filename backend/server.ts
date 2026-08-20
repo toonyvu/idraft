@@ -1,0 +1,33 @@
+import express from "express";
+import cors from "cors";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
+import { setupTournamentSocket } from "./websockets/tournamentSocket.js";
+import type { Request, Response } from "express";
+import characterRoutes from "./routes/character.routes.js";
+
+const PORT = process.env.PORT || 8080;
+const app = express();
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+setupTournamentSocket(wss);
+
+app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  }),
+);
+
+app.use("/characters", characterRoutes);
+
+app.use((err: unknown, req: Request, res: Response) => {
+  console.error(err);
+
+  res.status(500).json({
+    message: "Internal server error",
+  });
+});
+
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
