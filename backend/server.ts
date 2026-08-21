@@ -4,7 +4,9 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { setupTournamentSocket } from "./websockets/tournamentSocket.js";
 import type { Request, Response } from "express";
+
 import characterRoutes from "./routes/character.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -21,6 +23,8 @@ app.use(
 );
 
 app.use("/characters", characterRoutes);
+app.use("/auth", authRoutes);
+app.use("/tournaments");
 
 app.use((err: unknown, req: Request, res: Response) => {
   console.error(err);
