@@ -2,9 +2,21 @@ import bcrypt from "bcrypt";
 import { pool } from "../database.js";
 
 export async function login(username: string, password: string) {
-  const emailResult = await pool.query(`SELECT * FROM users where email = $1`, [
-    username,
-  ]);
+  const userResult = await pool.query(
+    `SELECT * FROM users where username = $1`,
+    [username],
+  );
+
+  const user = userResult.rows[0];
+  const match = await bcrypt.compare(password, user.password_hash);
+
+  if (!match) {
+    throw { status: 401, message: "Incorrect username or password." };
+  }
+
+  const { password: _, ...safeUser } = user;
+
+  return safeUser;
 }
 
 export async function signup(

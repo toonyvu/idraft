@@ -19,12 +19,12 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
+    credentials: true,
   }),
 );
 
 app.use("/characters", characterRoutes);
 app.use("/auth", authRoutes);
-app.use("/tournaments");
 
 app.use((err: unknown, req: Request, res: Response) => {
   console.error(err);

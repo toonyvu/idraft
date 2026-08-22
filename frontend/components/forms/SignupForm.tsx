@@ -1,12 +1,15 @@
 "use client";
 import { useState } from "react";
 import { signup } from "@/api/signup";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordR, setPasswordR] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,6 +19,9 @@ export default function SignupForm() {
     }
 
     const res = await signup(username, password, email);
+    if (res.ok) {
+      router.push("/tournaments");
+    }
   };
   return (
     <div>
@@ -56,6 +62,8 @@ export default function SignupForm() {
           id="passwordR"
           className="outline-1 rounded-sm"
         />
+
+        {error ? <h1>{error}</h1> : ""}
 
         <button
           type="submit"

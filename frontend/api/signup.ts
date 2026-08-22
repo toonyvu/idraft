@@ -3,6 +3,7 @@ export async function signup(
   password: string,
   username: string,
 ) {
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
     method: "POST",
     credentials: "include",
