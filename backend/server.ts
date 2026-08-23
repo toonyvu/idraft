@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { setupTournamentSocket } from "./websockets/tournamentSocket.js";
@@ -16,6 +17,8 @@ const wss = new WebSocketServer({ server });
 setupTournamentSocket(wss);
 
 app.use(express.json());
+app.use(cookieParser());
+
 app.use(
   cors({
     origin: "http://localhost:3000",

@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { signup, login } from "../services/auth.service.js";
+import { signup, login, getCurrentUser } from "../services/auth.service.js";
+import type { AuthRequest } from "../middleware/authenticateToken.js";
 
 export async function loginController(req: Request, res: Response) {
   const { username, password } = req.body;
@@ -13,7 +14,7 @@ export async function loginController(req: Request, res: Response) {
     const user = await login(username, password);
 
     const accessToken = jwt.sign(
-      { userId: user.id },
+      { userId: user.id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: "1d" },
     );
@@ -58,4 +59,13 @@ export async function logoutController(req: Request, res: Response) {
   res.clearCookie("accessToken");
 
   return res.status(200).json({ message: "Logged out successfully." });
+}
+
+export async function getCurrentUserController(
+  req: AuthRequest,
+  res: Response,
+) {
+  const user = await getCurrentUser(req.user!.userId);
+
+  return res.json(user);
 }

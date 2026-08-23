@@ -14,7 +14,7 @@ export async function login(username: string, password: string) {
     throw { status: 401, message: "Incorrect username or password." };
   }
 
-  const { password: _, ...safeUser } = user;
+  const { password_hash: _, ...safeUser } = user;
 
   return safeUser;
 }
@@ -43,4 +43,13 @@ export async function signup(
   );
 
   return result.rows[0];
+}
+
+export async function getCurrentUser(userId: number) {
+  const userResult = await pool.query(
+    `SELECT id, username FROM users WHERE id = $1`,
+    [userId],
+  );
+
+  return userResult.rows[0];
 }
