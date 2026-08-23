@@ -8,3 +8,14 @@ export type Character = {
 };
 
 export type CharacterList = Character[];
+
+export type TournamentList = Tournament[];
+
+export type Tournament = {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  owner_id: number;
+  created_at: string;
+};

@@ -22,7 +22,6 @@ export default async function DashboardLayout({
     cache: "no-store",
   });
 
-  console.log(response.status);
   if (!response.ok) {
     redirect("/login");
   }

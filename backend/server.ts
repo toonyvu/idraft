@@ -8,6 +8,7 @@ import type { Request, Response } from "express";
 
 import characterRoutes from "./routes/character.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import tournamentRoutes from "./routes/tournaments.routes.js";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -27,6 +28,7 @@ app.use(
 );
 
 app.use("/characters", characterRoutes);
+app.use("/tournaments", tournamentRoutes);
 app.use("/auth", authRoutes);
 
 app.use((err: unknown, req: Request, res: Response) => {
@@ -34,6 +36,7 @@ app.use((err: unknown, req: Request, res: Response) => {
 
   res.status(500).json({
     message: "Internal server error",
+    err,
   });
 });
 
