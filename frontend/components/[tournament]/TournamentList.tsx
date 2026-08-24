@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllTournaments } from "@/api/tournaments";
 import { useRouter } from "next/navigation";
 
-import type { TournamentList } from "@/types/types";
+import type { Tournament, TournamentList } from "@/types/types";
 
 export default function TournamentList() {
   const router = useRouter();
@@ -74,6 +74,13 @@ export default function TournamentList() {
 
       <div>
         <h1>List of tournaments:</h1>
+
+        {tournaments?.map((tournament: Tournament) => (
+          <div key={tournament.id} className="flex flex-col space-y-4">
+            <h1>{tournament.name}</h1>
+            <p>{tournament.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

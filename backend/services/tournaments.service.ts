@@ -21,3 +21,20 @@ export async function getAllTournaments(userId?: number) {
     return tournamentsResult.rows;
   }
 }
+
+export async function createNewTournament(
+  name: string,
+  description: string,
+  owner_id: number,
+) {
+  const insertResult = await pool.query(
+    `
+      INSERT INTO tournaments (name, description, owner_id) 
+      VALUES ($1, $2, $3) 
+      RETURNING *
+    `,
+    [name, description, owner_id],
+  );
+
+  return insertResult.rows[0];
+}
