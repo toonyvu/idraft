@@ -19,3 +19,19 @@ export type Tournament = {
   owner_id: number;
   created_at: string;
 };
+
+export type TeamInsert = {
+  teamName: string;
+  image_url: string;
+  acronym: string;
+};
+
+export type TeamGet = {
+  id: number;
+  name: string;
+  logo_url: string;
+  created_at: string;
+  tournament_id: number;
+  owner_id: string;
+  acronym: string;
+};

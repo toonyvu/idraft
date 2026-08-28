@@ -3,6 +3,7 @@ import type { AuthRequest } from "../middleware/authenticateToken.js";
 import {
   getAllTournaments,
   createNewTournament,
+  getTournamentById,
 } from "../services/tournaments.service.js";
 
 export async function getAllTournamentsController(
@@ -25,6 +26,7 @@ export async function createNewTournamentController(
   res: Response,
   next: NextFunction,
 ) {
+  console.log("Controller reached");
   const { name, description } = req.body;
   const userId = req.user!.userId;
   try {
@@ -33,6 +35,21 @@ export async function createNewTournamentController(
       description,
       Number(userId),
     );
+    return res.status(200).json(tournament);
+  } catch (err) {
+    console.log(err);
+    next();
+  }
+}
+
+export async function getTournamentByIdController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { id } = req.params;
+  try {
+    const tournament = await getTournamentById(Number(id));
     return res.status(200).json(tournament);
   } catch (err) {
     console.log(err);

@@ -76,9 +76,16 @@ export default function TournamentList() {
         <h1>List of tournaments:</h1>
 
         {tournaments?.map((tournament: Tournament) => (
-          <div key={tournament.id} className="flex flex-col space-y-4">
-            <h1>{tournament.name}</h1>
-            <p>{tournament.description}</p>
+          <div key={tournament.id} className="flex flex-col">
+            <h1>Name: {tournament.name}</h1>
+            <p>Description: {tournament.description}</p>
+            <button
+              onClick={() => {
+                router.push(`/tournaments/${tournament.id}`);
+              }}
+            >
+              Go To Tournament
+            </button>
           </div>
         ))}
       </div>

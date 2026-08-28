@@ -6,3 +6,9 @@ export type DraftStep = {
   action: PhaseAction;
   count: number;
 };
+
+export type Team = {
+  name: string;
+  tournamentId: number;
+  logo_url: number;
+};

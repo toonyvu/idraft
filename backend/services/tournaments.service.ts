@@ -38,3 +38,15 @@ export async function createNewTournament(
 
   return insertResult.rows[0];
 }
+
+export async function getTournamentById(id: number) {
+  const tournamentResult = await pool.query(
+    `
+    SELECT * FROM tournaments
+    WHERE id = $1
+    `,
+    [id],
+  );
+
+  return tournamentResult.rows[0];
+}

@@ -35,3 +35,19 @@ export async function createNewTournament(
 
   return res.json();
 }
+
+export async function getTournamentById(id: number): Promise<Tournament> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/tournaments/${id}`,
+    {
+      method: "GET",
+      credentials: "include",
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get tournament: ${res.status}`);
+  }
+
+  return res.json();
+}
