@@ -8,7 +8,8 @@ export type DraftStep = {
 };
 
 export type Team = {
-  name: string;
+  teamName: string;
   tournamentId: number;
-  logo_url: number;
+  image_url: number;
+  acronym: string;
 };

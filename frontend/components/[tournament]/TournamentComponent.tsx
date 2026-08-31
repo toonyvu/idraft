@@ -8,9 +8,11 @@ type Props = {
 
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { getTournamentById } from "@/api/tournaments";
 import { uploadTeamImage } from "@/lib/uploadImages";
 import { createTeam, getTournamentTeams } from "@/api/teams";
+import Image from "next/image";
 type TeamInsert = {
   teamName: string;
   image_url: string;
@@ -18,6 +20,7 @@ type TeamInsert = {
 };
 
 export default function TournamentComponent({ id }: Props) {
+  const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState<TeamInsert>({
     teamName: "",
@@ -97,27 +100,49 @@ export default function TournamentComponent({ id }: Props) {
     <div>
       <h1>Tournament Page {id}</h1>
 
-      <div>
+      <div className="mb-8">
         <h2>Tournament Name: {tournament?.name}</h2>
         <h2>Description: {tournament?.description}</h2>
       </div>
 
       <div>Competing Teams:</div>
 
-      <div>
+      <div className="mb-8">
         {teams?.length === 0 && <h1>No Teams Found.</h1>}
 
         {teams?.map((team: TeamGet) => (
-          <div key={team.id}>
-            <h1>{team.name}</h1>
-            <h2>{team.acronym}</h2>
+          <div key={team.id} className="flex w-1/2 items-center gap-4">
+            {/* Team information */}
+            <div className="flex flex-row items-center gap-2">
+              <Image
+                src={team.logo_url}
+                width={25}
+                height={25}
+                alt={team.name}
+              />
+
+              <div>
+                <h1>{team.name}</h1>
+                <h2>{team.acronym}</h2>
+              </div>
+            </div>
+
+            {/* Manage button */}
+            <button
+              className="ml-auto h-8 bg-green-400 px-3 hover:bg-green-600"
+              onClick={() => {
+                router.push(`/tournaments/${id}/teams/manage/${team.id}`);
+              }}
+            >
+              Manage team roster
+            </button>
           </div>
         ))}
       </div>
 
-      <h1 className="bg-green-500">Create Team</h1>
+      <h1 className="">Create Team</h1>
       <form onSubmit={uploadTeam}>
-        <div className="flex flex-col w-1/2 ">
+        <div className="flex flex-col w-1/2">
           <label htmlFor="teamName">Team Name</label>
           <input
             type="text"
@@ -154,7 +179,9 @@ export default function TournamentComponent({ id }: Props) {
             onChange={handleImageUpload}
           />
 
-          <button className="bg-green-400 hover:bg-green-600">Submit</button>
+          <button className="bg-green-400 hover:bg-green-600 mt-4">
+            Submit
+          </button>
         </div>
       </form>
 

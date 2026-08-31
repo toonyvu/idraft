@@ -40,6 +40,23 @@ export async function insertTeamToTournament(
       INSERT INTO teams (name, acronym, tournament_id, logo_url, owner_id)
       VALUES ($1, $2, $3, $4, $5)
     `,
-    [team.name, team.acronym, tournamentId, team.logo_url, userId],
+    [team.teamName, team.acronym, tournamentId, team.image_url, userId],
   );
+}
+
+export async function getTeamFromTournament(
+  tournamentId: number,
+  teamId: number,
+) {
+  const teamResult = await pool.query(
+    `
+      SELECT * FROM teams
+      WHERE id = $1
+      AND tournament_id = $2
+
+    `,
+    [teamId, tournamentId],
+  );
+
+  return teamResult.rows[0];
 }

@@ -9,6 +9,7 @@ import type { NextFunction, Request, Response } from "express";
 import characterRoutes from "./routes/character.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import tournamentRoutes from "./routes/tournaments.routes.js";
+import playerRoutes from "./routes/players.routes.js";
 import teamsRoutes from "./routes/teams.routes.js";
 
 const PORT = process.env.PORT || 8080;
@@ -31,6 +32,7 @@ app.use(
 app.use("/characters", characterRoutes);
 app.use("/tournaments", tournamentRoutes);
 app.use("/teams", teamsRoutes);
+app.use("/players", playerRoutes);
 app.use("/auth", authRoutes);
 
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {

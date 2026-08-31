@@ -35,3 +35,15 @@ export type TeamGet = {
   owner_id: string;
   acronym: string;
 };
+
+export type TournamentTeams = TeamGet[];
+
+export type PlayerGet = {
+  id: number;
+  name: string;
+  role: string;
+  team_id: number;
+  created_at: string;
+};
+
+export type PlayersTeam = PlayerGet[];

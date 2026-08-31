@@ -2,6 +2,7 @@ import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/authenticateToken.js";
 
 import {
+  getTeamFromTournament,
   getTeamsFromTournament,
   insertTeamToTournament,
 } from "../services/teams.service.js";
@@ -43,6 +44,29 @@ export async function createTeamFromTournamentController(
     });
   } catch (err) {
     console.error(err);
+    next(err);
+  }
+}
+
+export async function getTeamFromTournamentController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { tournamentId, teamId } = await req.query;
+    if (!tournamentId || !teamId) {
+      throw new Error("Tournament or TeamId not found.");
+    }
+
+    const team = await getTeamFromTournament(
+      Number(tournamentId),
+      Number(teamId),
+    );
+
+    return res.status(201).json(team);
+  } catch (err) {
+    console.log(err);
     next(err);
   }
 }
