@@ -34,6 +34,7 @@ export type TeamGet = {
   tournament_id: number;
   owner_id: string;
   acronym: string;
+  status: string;
 };
 
 export type TournamentTeams = TeamGet[];

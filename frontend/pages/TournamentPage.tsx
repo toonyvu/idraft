@@ -1,4 +1,4 @@
-import TournamentComponent from "@/components/[tournament]/TournamentComponent";
+import TournamentComponent from "@/components/[tournament]/[manage]/[teams]/TournamentComponent";
 
 type Props = {
   id: number;

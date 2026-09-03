@@ -2,6 +2,7 @@ import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/authenticateToken.js";
 
 import {
+  deleteTeamFromTournament,
   getTeamFromTournament,
   getTeamsFromTournament,
   insertTeamToTournament,
@@ -65,6 +66,26 @@ export async function getTeamFromTournamentController(
     );
 
     return res.status(201).json(team);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+}
+
+export async function deleteTeamFromTournamentController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { tournamentId, teamId } = await req.query;
+    if (!tournamentId || !teamId) {
+      throw new Error("Tournament or TeamId not found.");
+    }
+
+    await deleteTeamFromTournament(Number(teamId), Number(tournamentId));
+
+    return res.status(200).json({ message: "Team deleted." });
   } catch (err) {
     console.log(err);
     next(err);

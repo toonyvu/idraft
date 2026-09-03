@@ -19,7 +19,7 @@ type TeamInsert = {
   acronym: string;
 };
 
-export default function TournamentComponent({ id }: Props) {
+export default function TeamsList({ id }: Props) {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState<TeamInsert>({
@@ -103,6 +103,10 @@ export default function TournamentComponent({ id }: Props) {
       <div className="mb-8">
         <h2>Tournament Name: {tournament?.name}</h2>
         <h2>Description: {tournament?.description}</h2>
+        <h2>
+          Status:{" "}
+          <span className="first-letter:uppercase">{tournament?.status}</span>
+        </h2>
       </div>
 
       <div>Competing Teams:</div>
@@ -179,13 +183,15 @@ export default function TournamentComponent({ id }: Props) {
             onChange={handleImageUpload}
           />
 
-          <button className="bg-green-400 hover:bg-green-600 mt-4">
-            Submit
-          </button>
+          {tournament?.status !== "created" ? (
+            <button className="bg-gray-500 mt-4">Submit</button>
+          ) : (
+            <button className="bg-green-400 hover:bg-green-600 mt-4">
+              Submit
+            </button>
+          )}
         </div>
       </form>
-
-      <div>List of Matches:</div>
     </div>
   );
 }

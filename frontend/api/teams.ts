@@ -51,3 +51,19 @@ export async function getTeam(teamId: number, tournamentId: number) {
 
   return res.json();
 }
+
+export async function deleteTeam(teamId: number, tournamentId: number) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/teams/delete?tournamentId=${tournamentId}&teamId=${teamId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to delete team: ${res.status}`);
+  }
+
+  return res.json();
+}

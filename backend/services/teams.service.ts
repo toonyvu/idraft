@@ -9,11 +9,13 @@ export async function getTeamsFromTournament(
   if (userId) {
     const teamsResult = await pool.query(
       `
-            SELECT * FROM teams
-            WHERE owner_id = $1
-            AND tournament_id = $2    
+            SELECT teams.*, t.status
+            FROM teams
+            INNER JOIN tournaments t
+            ON t.id = $1
+            AND t.owner_id = $2    
         `,
-      [userId, tournamentId],
+      [tournamentId, userId],
     );
 
     return teamsResult.rows;
@@ -50,8 +52,11 @@ export async function getTeamFromTournament(
 ) {
   const teamResult = await pool.query(
     `
-      SELECT * FROM teams
-      WHERE id = $1
+      SELECT teams.*, tournaments.status
+      FROM tournaments
+      INNER JOIN teams
+      ON teams.tournament_id = tournaments.id
+      WHERE teams.id = $1
       AND tournament_id = $2
 
     `,
@@ -59,4 +64,18 @@ export async function getTeamFromTournament(
   );
 
   return teamResult.rows[0];
+}
+
+export async function deleteTeamFromTournament(
+  teamId: number,
+  tournamentId: number,
+) {
+  await pool.query(
+    `
+ DELETE FROM teams
+ WHERE id = $1
+ AND tournament_id = $2   
+    `,
+    [teamId, tournamentId],
+  );
 }

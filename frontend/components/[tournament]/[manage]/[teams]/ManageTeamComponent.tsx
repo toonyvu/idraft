@@ -56,6 +56,8 @@ export default function ManageTeamComponent({ id, teamId }: Props) {
     },
   });
 
+  console.log(team);
+
   const createPlayerMutation = useMutation({
     mutationFn: () => createTeamPlayer(formData.plrName, formData.role, teamId),
 
@@ -179,9 +181,15 @@ export default function ManageTeamComponent({ id, teamId }: Props) {
             />
           </div>
 
-          <button className="bg-green-400 hover:bg-green-600">
-            Add Player
-          </button>
+          {team.status !== "created" ? (
+            <button className="bg-gray-500" disabled>
+              Add Player
+            </button>
+          ) : (
+            <button className="bg-green-400 hover:bg-green-600">
+              Add Player
+            </button>
+          )}
         </div>
       </form>
 
