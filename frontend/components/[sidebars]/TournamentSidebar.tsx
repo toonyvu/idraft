@@ -11,7 +11,7 @@ export default function TournamentSidebar({ id }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <div>
+    <div className="flex flex-col gap-y-2">
       <div>
         <h1>Tournament</h1>
         <p
@@ -45,6 +45,14 @@ export default function TournamentSidebar({ id }: Props) {
           }}
         >
           Manage Matches
+        </p>
+        <p
+          className="hover:bg-gray-500"
+          onClick={() => {
+            router.push(`/tournaments/${id}/matches/create`);
+          }}
+        >
+          Create Match
         </p>
       </div>
     </div>

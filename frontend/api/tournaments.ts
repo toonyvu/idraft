@@ -51,3 +51,22 @@ export async function getTournamentById(id: number): Promise<Tournament> {
 
   return res.json();
 }
+
+export async function deleteTournament(tournamentId: number) {
+  console.log(tournamentId);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/tournaments/delete?tournamentId=${tournamentId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    },
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Error deleting tournament.");
+  }
+
+  return data;
+}

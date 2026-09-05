@@ -44,3 +44,14 @@ export async function insertTeamPlayer(
 
   return insertResult.rows[0];
 }
+
+export async function deletePlayer(teamId: number, playerId: number) {
+  await pool.query(
+    `
+    DELETE FROM team_players
+    WHERE id = $1
+    AND team_id = $2
+    `,
+    [playerId, teamId],
+  );
+}

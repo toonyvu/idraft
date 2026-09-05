@@ -48,3 +48,13 @@ export type PlayerGet = {
 };
 
 export type PlayersTeam = PlayerGet[];
+
+export type Match = {
+  id: number;
+  tournament_id: number;
+  best_of: number;
+  status: string;
+  created_at: string;
+};
+
+export type MatchList = Match[];

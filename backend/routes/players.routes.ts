@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteTeamPlayerController,
   getTeamPlayersController,
   insertTeamPlayerController,
 } from "../controllers/players.controller.js";
@@ -11,5 +12,6 @@ router.use(authenticateToken);
 
 router.get("/get", getTeamPlayersController);
 router.post("/new", insertTeamPlayerController);
+router.delete("/delete", deleteTeamPlayerController);
 
 export default router;

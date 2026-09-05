@@ -7,11 +7,13 @@ export async function getTeamPlayers(teamId: number) {
     },
   );
 
+  const data = await res.json();
+
   if (!res.ok) {
-    throw new Error(`Error retrieving team: ${res.status}`);
+    throw new Error(data.message || `Error getting players, ${res.status}`);
   }
 
-  return res.json();
+  return data;
 }
 
 export async function createTeamPlayer(
@@ -31,9 +33,30 @@ export async function createTeamPlayer(
     },
   );
 
+  const data = await res.json();
+
   if (!res.ok) {
-    throw new Error(`Error inserting Player, ${res.status}`);
+    throw new Error(data.message || `Error inserting player, ${res.status}`);
   }
 
-  return res.json();
+  return data;
+}
+
+export async function deleteTeamPlayer(teamId: number, playerId: number) {
+  console.log(teamId, playerId);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/players/delete?teamId=${teamId}&playerId=${playerId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    },
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || `Error deleting player, ${res.status}`);
+  }
+
+  return data;
 }

@@ -20,6 +20,17 @@ type TeamInsert = {
   acronym: string;
 };
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 export default function TournamentComponent({ id }: Props) {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
@@ -157,6 +168,29 @@ export default function TournamentComponent({ id }: Props) {
         ))}
       </div>
 
+      <Dialog>
+        <DialogTrigger
+          render={
+            <button className="h-8 bg-green-500">Start Tournament</button>
+          }
+        ></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Start Tournament</DialogTitle>
+            <DialogDescription>
+              Pressing confirm will start the tournament. Once clicked, you can
+              no longer add/delete new teams and change team rosters. This
+              action is NOT reversible!
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose
+              render={<button className="h-8 bg-gray-500">Cancel</button>}
+            />
+            <button className="bg-green-400">Confirm</button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <div>List of Matches:</div>
     </div>
   );

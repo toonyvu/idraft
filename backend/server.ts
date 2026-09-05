@@ -11,6 +11,7 @@ import authRoutes from "./routes/auth.routes.js";
 import tournamentRoutes from "./routes/tournaments.routes.js";
 import playerRoutes from "./routes/players.routes.js";
 import teamsRoutes from "./routes/teams.routes.js";
+import matchesRoutes from "./routes/matches.routes.js";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -34,6 +35,7 @@ app.use("/tournaments", tournamentRoutes);
 app.use("/teams", teamsRoutes);
 app.use("/players", playerRoutes);
 app.use("/auth", authRoutes);
+app.use("/matches", matchesRoutes);
 
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   console.error(err);

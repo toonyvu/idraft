@@ -72,9 +72,9 @@ export async function deleteTeamFromTournament(
 ) {
   await pool.query(
     `
- DELETE FROM teams
- WHERE id = $1
- AND tournament_id = $2   
+      DELETE FROM teams
+      WHERE id = $1
+      AND tournament_id = $2   
     `,
     [teamId, tournamentId],
   );

@@ -50,3 +50,13 @@ export async function getTournamentById(id: number) {
 
   return tournamentResult.rows[0];
 }
+
+export async function deleteTournament(tournamendId: number) {
+  await pool.query(
+    `
+    DELETE FROM tournaments
+    WHERE id = $1
+    `,
+    [tournamendId],
+  );
+}

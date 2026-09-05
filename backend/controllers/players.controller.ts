@@ -1,4 +1,5 @@
 import {
+  deletePlayer,
   getPlayersFromTeam,
   insertTeamPlayer,
 } from "../services/players.service.js";
@@ -34,7 +35,7 @@ export async function insertTeamPlayerController(
   next: NextFunction,
 ) {
   const userId = req.user?.userId;
-  const { teamId } = await req.query;
+  const { teamId } = req.query;
   const { name, role } = req.body;
 
   try {
@@ -44,6 +45,25 @@ export async function insertTeamPlayerController(
 
     const plrName = await insertTeamPlayer(Number(teamId), userId, role, name);
     return res.status(200).json(plrName);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function deleteTeamPlayerController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { teamId, playerId } = req.query;
+  console.log(teamId, playerId);
+  try {
+    if (!teamId || !playerId) {
+      throw new Error("teamId or playerId not found.");
+    }
+
+    await deletePlayer(Number(teamId), Number(playerId));
+    return res.status(200).json({ message: "Deleted team successfully!" });
   } catch (err) {
     next(err);
   }

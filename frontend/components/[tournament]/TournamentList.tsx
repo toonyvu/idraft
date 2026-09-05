@@ -1,10 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { getAllTournaments } from "@/api/tournaments";
+import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
+import { deleteTournament, getAllTournaments } from "@/api/tournaments";
 import { useRouter } from "next/navigation";
 
 import type { Tournament, TournamentList } from "@/types/types";
+import { queryClient } from "@/app/queryClient";
 
 export default function TournamentList() {
   const router = useRouter();
@@ -18,6 +19,16 @@ export default function TournamentList() {
     queryFn: async () => {
       const result = await getAllTournaments();
       return result;
+    },
+  });
+
+  const deleteTournamentMutation = useMutation({
+    mutationFn: (tournamentId: number) => deleteTournament(tournamentId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["tournamentsQuery"],
+      });
     },
   });
 
@@ -83,8 +94,17 @@ export default function TournamentList() {
               onClick={() => {
                 router.push(`/tournaments/${tournament.id}`);
               }}
+              className="h-8 bg-green-400"
             >
               Go To Tournament
+            </button>
+            <button
+              className="h-8 bg-red-400"
+              onClick={() => {
+                deleteTournamentMutation.mutate(tournament.id);
+              }}
+            >
+              Delete Tournament
             </button>
           </div>
         ))}

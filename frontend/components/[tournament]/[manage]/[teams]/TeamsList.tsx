@@ -184,7 +184,9 @@ export default function TeamsList({ id }: Props) {
           />
 
           {tournament?.status !== "created" ? (
-            <button className="bg-gray-500 mt-4">Submit</button>
+            <button className="bg-gray-500 mt-4" disabled>
+              Submit
+            </button>
           ) : (
             <button className="bg-green-400 hover:bg-green-600 mt-4">
               Submit

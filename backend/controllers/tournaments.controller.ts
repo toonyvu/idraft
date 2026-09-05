@@ -4,6 +4,7 @@ import {
   getAllTournaments,
   createNewTournament,
   getTournamentById,
+  deleteTournament,
 } from "../services/tournaments.service.js";
 
 export async function getAllTournamentsController(
@@ -54,5 +55,23 @@ export async function getTournamentByIdController(
   } catch (err) {
     console.log(err);
     next();
+  }
+}
+
+export async function deleteTournamentController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { tournamentId } = req.query;
+  console.log(tournamentId);
+  try {
+    if (!tournamentId) {
+      throw new Error("Failure to delete tournament.");
+    }
+    await deleteTournament(Number(tournamentId));
+    return res.status(200).json({ message: "Deleted tournament." });
+  } catch (err) {
+    next(err);
   }
 }

@@ -2,8 +2,8 @@
 
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { getTeam } from "@/api/teams";
-import { createTeamPlayer } from "@/api/players";
+import { deleteTeam, getTeam } from "@/api/teams";
+import { createTeamPlayer, deleteTeamPlayer } from "@/api/players";
 
 import type { PlayersTeam, TeamGet } from "@/types/types";
 import { getTeamPlayers } from "@/api/players";
@@ -60,6 +60,16 @@ export default function ManageTeamComponent({ id, teamId }: Props) {
 
   const createPlayerMutation = useMutation({
     mutationFn: () => createTeamPlayer(formData.plrName, formData.role, teamId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["PlayerQuery", teamId],
+      });
+    },
+  });
+
+  const deletePlayerMutation = useMutation({
+    mutationFn: (playerId: number) => deleteTeamPlayer(teamId, playerId),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -196,9 +206,19 @@ export default function ManageTeamComponent({ id, teamId }: Props) {
       <h1 className="mt-8">Roster:</h1>
       {players?.length === 0 && <h1>No players in team.</h1>}
       {players?.map((player) => (
-        <div key={player.id} className="mb-4">
-          <h1>Name: {player.name}</h1>
-          <h1>Role: {player.role}</h1>
+        <div key={player.id} className="mb-4 flex flex-row">
+          <div className="flex flex-col">
+            <h1>Name: {player.name}</h1>
+            <h1>Role: {player.role}</h1>
+          </div>
+          <button
+            className="bg-red-500 h-8"
+            onClick={async () => {
+              deletePlayerMutation.mutate(player.id);
+            }}
+          >
+            {deletePlayerMutation.isPending ? "Deleting..." : "Delete player"}
+          </button>
         </div>
       ))}
     </div>
