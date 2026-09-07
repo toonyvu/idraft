@@ -79,3 +79,13 @@ export async function deleteTeamFromTournament(
     [teamId, tournamentId],
   );
 }
+
+export async function getMatchTeams(matchId: number) {
+  const res = await pool.query(
+    `
+    SELECT * FROM match_teams
+    `,
+  );
+
+  return res.rows;
+}

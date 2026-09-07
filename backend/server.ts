@@ -13,6 +13,7 @@ import playerRoutes from "./routes/players.routes.js";
 import teamsRoutes from "./routes/teams.routes.js";
 import matchesRoutes from "./routes/matches.routes.js";
 import gamesRoutes from "./routes/games.routes.js";
+import mapRoutes from "./routes/maps.routes.js";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -38,6 +39,7 @@ app.use("/players", playerRoutes);
 app.use("/auth", authRoutes);
 app.use("/matches", matchesRoutes);
 app.use("/games", gamesRoutes);
+app.use("/maps", mapRoutes);
 
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   console.error(err);

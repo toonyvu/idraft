@@ -4,6 +4,6 @@ type Props = {
   id: number;
 };
 
-export async function TeamsListPage({ id }: Props) {
+export default function TeamsListPage({ id }: Props) {
   return <TeamsList id={id} />;
 }

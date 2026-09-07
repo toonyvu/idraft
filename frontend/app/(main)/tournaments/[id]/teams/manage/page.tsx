@@ -1,4 +1,4 @@
-import { TeamsListPage } from "@/pages/TeamsListPage";
+import TeamsListPage from "@/pages/TeamsListPage";
 
 type Props = {
   id: string;

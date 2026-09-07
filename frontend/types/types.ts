@@ -78,3 +78,13 @@ export type Game = {
 };
 
 export type GamesList = Game[];
+
+export type Map = {
+  id: number;
+  map_name: string;
+  map_img_url: string;
+  is_active: boolean;
+  created_at: string;
+};
+
+export type MapList = Map[];

@@ -7,11 +7,13 @@ type Props = {
 import type { Match } from "@/types/types";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { getTournamentMatch } from "@/api/matches";
 import GamesList from "../[games]/GamesList";
 import Image from "next/image";
 
 export default function MatchDetails({ matchId, tournamentId }: Props) {
+  const router = useRouter();
   const { data: matchInfo } = useQuery<Match>({
     queryKey: ["matchQuery", tournamentId, matchId],
 
@@ -103,7 +105,14 @@ export default function MatchDetails({ matchId, tournamentId }: Props) {
 
       <div className="mt-6">
         <h1 className="text-3xl font-bold">Games</h1>
-        <button className="mt-2 bg-green-400 hover:bg-green-600 p-1 rounded-sm">
+        <button
+          className="mt-2 bg-green-400 hover:bg-green-600 p-1 rounded-sm"
+          onClick={() => {
+            router.push(
+              `/tournaments/${tournamentId}/matches/${matchId}/games/create`,
+            );
+          }}
+        >
           Create Game
         </button>
         <GamesList tournamentId={tournamentId} matchId={matchId} />
