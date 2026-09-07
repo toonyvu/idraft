@@ -21,3 +21,66 @@ export async function getAllTournaments(userId?: number) {
     return tournamentsResult.rows;
   }
 }
+
+export async function createNewTournament(
+  name: string,
+  description: string,
+  owner_id: number,
+) {
+  const insertResult = await pool.query(
+    `
+      INSERT INTO tournaments (name, description, owner_id) 
+      VALUES ($1, $2, $3) 
+      RETURNING *
+    `,
+    [name, description, owner_id],
+  );
+
+  return insertResult.rows[0];
+}
+
+export async function getTournamentById(id: number) {
+  const tournamentResult = await pool.query(
+    `
+    SELECT * FROM tournaments
+    WHERE id = $1
+    `,
+    [id],
+  );
+
+  return tournamentResult.rows[0];
+}
+
+export async function deleteTournament(tournamendId: number) {
+  await pool.query(
+    `
+    DELETE FROM tournaments
+    WHERE id = $1
+    `,
+    [tournamendId],
+  );
+}
+
+export async function changeTournamentStatus(
+  tournamentId: number,
+  status: string,
+) {
+  await pool.query(
+    `UPDATE tournaments
+  SET status = $1
+  WHERE id = $2`,
+    [status, tournamentId],
+  );
+}
+
+export async function getTournamentStatus(tournamentId: number) {
+  const tournamentResult = await pool.query(
+    `
+    SELECT status from tournaments
+    WHERE id = $1
+    `,
+    [tournamentId],
+  );
+
+  return tournamentResult.rows[0];
+}

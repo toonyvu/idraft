@@ -16,7 +16,6 @@ export function authenticateToken(
   const token = req.cookies?.accessToken;
 
   if (!token) {
-    console.log("❌ No accessToken cookie");
     return res.status(401).json({
       message: "Authenticated required.",
     });
@@ -27,8 +26,6 @@ export function authenticateToken(
       userId: number;
       username: string;
     };
-
-    console.log("✅ JWT verified:", decoded);
 
     req.user = decoded;
     next();
