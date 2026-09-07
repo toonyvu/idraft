@@ -9,7 +9,7 @@ type Props = {
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getTournamentById } from "@/api/tournaments";
+import { changeTournamentStatus, getTournamentById } from "@/api/tournaments";
 import { uploadTeamImage } from "@/lib/uploadImages";
 import { createTeam, getTournamentTeams } from "@/api/teams";
 import { deleteTeam } from "@/api/teams";
@@ -60,24 +60,6 @@ export default function TournamentComponent({ id }: Props) {
     }
   };
 
-  const uploadTeam = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formData.teamName || !formData.image_url) return;
-    createTeamMutation.mutate(formData);
-  };
-
-  const queryClient = useQueryClient();
-
-  const createTeamMutation = useMutation({
-    mutationFn: (team: TeamInsert) => createTeam(team, id),
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["TeamsQuery", id],
-      });
-    },
-  });
-
   const {
     data: tournament,
     isError: isTournamentError,
@@ -119,6 +101,7 @@ export default function TournamentComponent({ id }: Props) {
       <div className="mb-8">
         <h2>Tournament Name: {tournament?.name}</h2>
         <h2>Description: {tournament?.description}</h2>
+        <h2>Status: {tournament.status}</h2>
       </div>
 
       <div>Competing Teams:</div>
@@ -187,7 +170,14 @@ export default function TournamentComponent({ id }: Props) {
             <DialogClose
               render={<button className="h-8 bg-gray-500">Cancel</button>}
             />
-            <button className="bg-green-400">Confirm</button>
+            <button
+              className="bg-green-400"
+              onClick={async () => {
+                changeTournamentStatus(Number(id), "in_progress");
+              }}
+            >
+              Confirm
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

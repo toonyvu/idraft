@@ -70,3 +70,42 @@ export async function deleteTournament(tournamentId: number) {
 
   return data;
 }
+
+export async function changeTournamentStatus(
+  tournamentId: number,
+  status: string,
+) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/tournaments/status?tournamentId=${tournamentId}&status=${status}`,
+    {
+      method: "PUT",
+      credentials: "include",
+    },
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Error changing tournament status");
+  }
+
+  return data;
+}
+
+export async function getTournamentStatus(tournamentId: number) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/tournaments/status/get?tournamentId=${tournamentId}`,
+    {
+      method: "GET",
+      credentials: "include",
+    },
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Error fetching tournament status");
+  }
+
+  return data.status;
+}

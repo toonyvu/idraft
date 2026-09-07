@@ -2,12 +2,14 @@
 
 import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { getTournamentTeams } from "@/api/teams";
 import { useState } from "react";
 import Image from "next/image";
 
-import type { TournamentTeams } from "@/types/types";
+import type { TournamentStatus, TournamentTeams } from "@/types/types";
+import { getTournamentStatus } from "@/api/tournaments";
+import { createTournamentMatch } from "@/api/matches";
 
 type Props = {
   tournamentId: number;
@@ -18,7 +20,24 @@ export default function CreateMatch({ tournamentId }: Props) {
   const [bestOf, setBestOf] = useState<string>("");
   console.log(tournamentId);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (selectedTeams.length !== 2 || !bestOf) {
+      return;
+    }
+
+    createMatchMutation.mutate();
+  };
+  const { data: status, isLoading: statusIsLoading } =
+    useQuery<TournamentStatus>({
+      queryKey: ["TournamentStatusQuery", tournamentId],
+      queryFn: async () => {
+        const status = await getTournamentStatus(tournamentId);
+        return status;
+      },
+    });
+
   const {
     data: teams,
     isLoading,
@@ -32,6 +51,18 @@ export default function CreateMatch({ tournamentId }: Props) {
     },
   });
 
+  const createMatchMutation = useMutation({
+    mutationFn: () =>
+      createTournamentMatch(tournamentId, Number(bestOf), selectedTeams),
+
+    onSuccess: () => {
+      // Reset form
+      setSelectedTeams([]);
+      setBestOf("");
+    },
+  });
+
+  console.log(status);
   if (!teams || teams.length === 0) {
     return <div>No Teams found.</div>;
   }
@@ -95,7 +126,7 @@ export default function CreateMatch({ tournamentId }: Props) {
         </div>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <Label>Best of</Label>
 
         <RadioGroup value={bestOf} onValueChange={setBestOf}>
@@ -117,8 +148,11 @@ export default function CreateMatch({ tournamentId }: Props) {
           </div>
         </RadioGroup>
 
-        <button className="mt-4 bg-green-500 hover:bg-green-800 hover:text-white">
-          Create Match
+        <button
+          className={`mt-4 ${status === "in_progress" ? "bg-green-400 hover:bg-green-600 text-black" : "bg-gray-400"}`}
+          disabled={status !== "in_progress"}
+        >
+          {status === "in_progress" ? "Create Match" : "Tournament Not Started"}
         </button>
       </form>
     </div>

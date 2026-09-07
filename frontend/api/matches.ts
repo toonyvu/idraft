@@ -15,6 +15,26 @@ export async function getTournamentMatches(tournamentId: number) {
   return data;
 }
 
+export async function getTournamentMatch(
+  tournamentId: number,
+  matchId: number,
+) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/matches/${matchId}?tournamentId=${tournamentId}`,
+    {
+      method: "GET",
+      credentials: "include",
+    },
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(`Error: ${data.message}` || "Internal server error.");
+  }
+
+  return data;
+}
+
 export async function createTournamentMatch(
   tournamentId: number,
   bestOf: number,
@@ -33,9 +53,10 @@ export async function createTournamentMatch(
   );
 
   const data = await res.json();
+
   if (!res.ok) {
-    throw new Error(`Error: ${data.message}` || "Internal server error.");
+    throw new Error(data.message || "Internal server error.");
   }
 
-  return data;
+  return data[0];
 }

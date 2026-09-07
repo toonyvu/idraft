@@ -5,6 +5,8 @@ import {
   createNewTournament,
   getTournamentById,
   deleteTournament,
+  changeTournamentStatus,
+  getTournamentStatus,
 } from "../services/tournaments.service.js";
 
 export async function getAllTournamentsController(
@@ -71,6 +73,43 @@ export async function deleteTournamentController(
     }
     await deleteTournament(Number(tournamentId));
     return res.status(200).json({ message: "Deleted tournament." });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function changeTournamentStatusController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { tournamentId, status } = req.query;
+  try {
+    if (!tournamentId || !status) {
+      throw new Error("TournamentId or status not available.");
+    }
+
+    await changeTournamentStatus(Number(tournamentId), String(status));
+    return res
+      .status(200)
+      .json({ message: `Tournament status changed to ${status}!` });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getTournamentStatusController(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { tournamentId } = req.query;
+  try {
+    if (!tournamentId) {
+      throw new Error("Tournament id not found.");
+    }
+    const result = await getTournamentStatus(Number(tournamentId));
+    return res.status(200).json({ status: result.status });
   } catch (err) {
     next(err);
   }

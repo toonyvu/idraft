@@ -60,3 +60,27 @@ export async function deleteTournament(tournamendId: number) {
     [tournamendId],
   );
 }
+
+export async function changeTournamentStatus(
+  tournamentId: number,
+  status: string,
+) {
+  await pool.query(
+    `UPDATE tournaments
+  SET status = $1
+  WHERE id = $2`,
+    [status, tournamentId],
+  );
+}
+
+export async function getTournamentStatus(tournamentId: number) {
+  const tournamentResult = await pool.query(
+    `
+    SELECT status from tournaments
+    WHERE id = $1
+    `,
+    [tournamentId],
+  );
+
+  return tournamentResult.rows[0];
+}

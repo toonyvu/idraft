@@ -193,7 +193,7 @@ export default function ManageTeamComponent({ id, teamId }: Props) {
 
           {team.status !== "created" ? (
             <button className="bg-gray-500" disabled>
-              Add Player
+              Tournament Started
             </button>
           ) : (
             <button className="bg-green-400 hover:bg-green-600">

@@ -13,3 +13,4 @@ export type Team = {
   image_url: number;
   acronym: string;
 };
+
