@@ -67,6 +67,14 @@ export type MatchTeam = {
   name: string;
   acronym: string;
   logo_url: string;
+  players: Player[];
+};
+
+export type Player = {
+  id: number;
+  name: string;
+  role: string;
+  created_at: string;
 };
 
 export type Game = {
@@ -75,6 +83,19 @@ export type Game = {
   game_number: number;
   status: string;
   created_at: string;
+};
+
+export type CreateHalfType = {
+  halfNumber: 1 | 2;
+  hunterTeamId: number;
+  survivorTeamId: number;
+  hunterPlayerId: number;
+  survivorPlayerIds: number[];
+};
+
+export type CreateGameType = {
+  mapName: string;
+  halves: CreateHalfType[];
 };
 
 export type GamesList = Game[];

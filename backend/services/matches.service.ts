@@ -44,7 +44,21 @@ export async function getMatchFromTournament(
           'id', t.id,
           'name', t.name,
           'logo_url', t.logo_url,
-          'acronym', t.acronym
+          'acronym', t.acronym,
+          'players', (
+            SELECT COALESCE (
+              json_agg(
+                json_build_object(
+                  'id', tp.id,
+                  'name', tp.name,
+                  'role', tp.role,
+                  'created_at', tp.created_at
+                )
+              ), '[]'
+            ) 
+            FROM team_players tp
+            WHERE tp.team_id = t.id
+          )
         )
       ) FILTER (WHERE t.id IS NOT NULL), '[]'
     ) as teams

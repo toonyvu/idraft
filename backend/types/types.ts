@@ -14,3 +14,15 @@ export type Team = {
   acronym: string;
 };
 
+export type CreateHalfType = {
+  halfNumber: 1 | 2;
+  hunterTeamId: number;
+  survivorTeamId: number;
+  hunterPlayerId: number;
+  survivorPlayerIds: number[];
+};
+
+export type CreateGameType = {
+  mapName: string;
+  halves: CreateHalfType[];
+};
